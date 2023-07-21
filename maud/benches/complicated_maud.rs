@@ -96,13 +96,13 @@ fn render_complicated_template(b: &mut test::Bencher) {
     b.iter(|| {
         use crate::btn::{Button, RequestMethod};
         layout(
-            format!("Homepage of {}", year),
+            format!("Homepage of {year}"),
             html! {
                 h1 { "Hello there!" }
 
                 @for entry in &teams {
                     div {
-                        strong { (entry.name) }
+                        strong { (entry.name) ": " (entry.score) }
                         (Button::new("Edit", "edit"))
                         (Button::new("Delete", "edit")
                                     .with_method(RequestMethod::Post))

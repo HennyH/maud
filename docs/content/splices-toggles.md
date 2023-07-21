@@ -20,8 +20,7 @@ html! {
 ```
 
 Arbitrary Rust code can be included in a splice by using a [block].
-This can be helpful for complex expressions
-that would be difficult to read otherwise.
+This can be helpful for complex expressions that would be difficult to read otherwise.
 
 ```rust
 # struct Foo;
@@ -61,8 +60,7 @@ html! {
 # ;
 ```
 
-To concatenate multiple values within an attribute,
-wrap the whole thing in braces.
+To concatenate multiple values within an attribute, wrap the whole thing in braces.
 This syntax is useful for building URLs.
 
 ```rust
@@ -85,7 +83,7 @@ let name = "rarity";
 let severity = "critical";
 # let _ = maud::
 html! {
-    aside#(name) {
+    aside #(name) {
         p.{ "color-" (severity) } { "This is the worst! Possible! Thing!" }
     }
 }
@@ -94,15 +92,11 @@ html! {
 
 ### What can be spliced?
 
-You can splice any value that implements [`std::fmt::Display`][Display].
-Most primitive types (such as `str` and `i32`) implement this trait,
-so they should work out of the box.
+You can splice any value that implements [`Render`][Render].
+Most primitive types (such as `str` and `i32`) implement this trait, so they should work out of the box.
 
-To change this behavior for some type,
-you can implement the [`Render`][Render] trait by hand.
-The [`PreEscaped`][PreEscaped] wrapper type,
-which outputs its argument without escaping,
-works this way.
+To get this behavior for a custom type, you can implement the [`Render`][Render] trait by hand.
+The [`PreEscaped`][PreEscaped] wrapper type, which outputs its argument without escaping, works this way.
 See the [traits](render-trait.md) section for details.
 
 ```rust
@@ -116,14 +110,12 @@ html! {
 # ;
 ```
 
-[Display]: http://doc.rust-lang.org/std/fmt/trait.Display.html
 [Render]: https://docs.rs/maud/*/maud/trait.Render.html
 [PreEscaped]: https://docs.rs/maud/*/maud/struct.PreEscaped.html
 
 ## Toggles: `[foo]`
 
-Use `[foo]` syntax to show or hide something
-based on a boolean expression `foo`.
+Use `[foo]` syntax to show or hide something based on a boolean expression `foo`.
 
 This works on empty attributes:
 
@@ -147,6 +139,25 @@ let cuteness = 95;
 # let _ = maud::
 html! {
     p.cute[cuteness > 50] { "Squee!" }
+}
+# ;
+```
+
+### Optional attributes with values: `title=[Some("value")]`
+
+Add optional attributes to an element using `attr=[value]` syntax, with *square* brackets.
+These are only rendered if the value is `Some<T>`, and entirely omitted if the value is `None`.
+
+```rust
+# let _ = maud::
+html! {
+    p title=[Some("Good password")] { "Correct horse" }
+
+    @let value = Some(42);
+    input value=[value];
+
+    @let title: Option<&str> = None;
+    p title=[title] { "Battery staple" }
 }
 # ;
 ```
