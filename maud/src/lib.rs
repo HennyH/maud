@@ -283,11 +283,9 @@ mod rocket_support {
 
     use crate::PreEscaped;
     use alloc::string::String;
-    use rocket::{
-        http::{ContentType, Status},
-        request::Request,
-        response::{Responder, Response},
-    };
+    use rocket::http::ContentType;
+    use rocket::request::Request;
+    use rocket::response::{self, Responder, Response};
     use std::io::Cursor;
 
     impl<'r, 'o: 'r> Responder<'r, 'o> for PreEscaped<String> {
